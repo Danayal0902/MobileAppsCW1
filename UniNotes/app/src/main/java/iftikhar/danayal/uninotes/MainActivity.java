@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +19,14 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.util.List;
+
+import iftikhar.danayal.uninotes.data.NoteItem;
+import iftikhar.danayal.uninotes.data.NotesData;
+
 public class MainActivity extends AppCompatActivity {
+
+    private NotesData datasource;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -39,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        datasource = new NotesData();
+        List<NoteItem> notes = datasource.findAll();
+        NoteItem note = notes.get(0);
+
+        Log.i("NOTES", note.getKey());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
