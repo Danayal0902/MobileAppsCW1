@@ -40,4 +40,9 @@ public class NoteItem {
         note.setText("");
         return note;
     }
+
+    @Override
+    public String toString() {
+        return this.getText();
+    }
 }
