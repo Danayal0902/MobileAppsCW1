@@ -18,7 +18,7 @@ import java.util.List;
 import iftikhar.danayal.uninotes.data.NoteItem;
 import iftikhar.danayal.uninotes.data.NotesData;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends AppCompatActivity {
 
     private NotesData datasource;
     List<NoteItem> notesList;
@@ -27,6 +27,17 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         datasource = new NotesData(this);
 
@@ -39,6 +50,9 @@ public class MainActivity extends ListActivity {
         notesList = datasource.findAll();
         ArrayAdapter<NoteItem> adapt = new ArrayAdapter<NoteItem>(this, R.layout.list_item_layout, notesList);
         setListAdapter(adapt);
+    }
+
+    private void setListAdapter(ArrayAdapter<NoteItem> adapt) {
     }
 
     @Override
@@ -69,4 +83,7 @@ public class MainActivity extends ListActivity {
         intent.putExtra("text", note.getText());
         startActivityForResult(intent, 1001);
     }
+
+
+    
 }
