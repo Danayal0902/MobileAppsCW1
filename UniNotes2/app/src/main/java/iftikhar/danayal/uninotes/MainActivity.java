@@ -50,13 +50,17 @@ public class MainActivity extends ListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_create)
-            createNote();
-        return true;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        createNote();
+
+
+
+        return super.onOptionsItemSelected(item);
     }
 
-        //return super.onOptionsItemSelected(item);
-    //}
 
     private void createNote() {
         NoteItem note = NoteItem.getNew();

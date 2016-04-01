@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UniNotes</string>
-    <string name="action_create">Create</string>
+    <string name="tool_create">Create</string>
 </resources>

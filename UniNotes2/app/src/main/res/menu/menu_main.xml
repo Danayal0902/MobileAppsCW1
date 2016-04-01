@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="iftikhar.danayal.uninotes.MainActivity">
     <item
-        android:id="@+id/action_create"
+        android:id="@+id/tool_create"
         android:orderInCategory="100"
-        android:title="@string/action_create"
+        android:title="@string/tool_create"
         android:icon="@drawable/create_note"
         app:showAsAction="always|withText" />
 </menu>
