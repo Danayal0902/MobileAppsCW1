@@ -7,6 +7,8 @@ package iftikhar.danayal.uninotes;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import iftikhar.danayal.uninotes.data.NoteItem;
@@ -29,5 +31,28 @@ public class NoteEditorActivity extends Activity{
         EditText edit = (EditText) findViewById(R.id.noteText);
         edit.setText(note.getText());
         edit.setSelection(note.getText().length());
+    }
+
+    private void save() {
+        EditText edit = (EditText) findViewById(R.id.noteText);
+        String noteText = edit.getText().toString();
+        Intent intent = new Intent();
+        intent.putExtra("key", note.getKey());
+        intent.putExtra("text", noteText);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            save();
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.save();
     }
 }

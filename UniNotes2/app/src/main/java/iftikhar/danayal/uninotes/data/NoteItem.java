@@ -1,5 +1,7 @@
 package iftikhar.danayal.uninotes.data;
 
+import android.widget.ListView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -10,6 +12,7 @@ import java.util.Locale;
 public class NoteItem {
     private String text;
     private String key;
+
 
     public String getKey() {
         return key;

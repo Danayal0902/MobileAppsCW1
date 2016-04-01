@@ -12,23 +12,38 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
 import java.util.List;
 
 import iftikhar.danayal.uninotes.data.NoteItem;
 import iftikhar.danayal.uninotes.data.NotesData;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
 
+    public static final int EDITOR_ACTIVITY_REQUEST = 1001;
     private NotesData datasource;
     List<NoteItem> notesList;
+    Button action_create;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
+
+        action_create = (Button)findViewById(R.id.action_create);
+
+        action_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NoteEditorActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
         refreshDisplay();
 
 
+
+
     }
+
+
 
     private void refreshDisplay() {
         notesList = datasource.findAll();
@@ -81,9 +100,27 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NoteEditorActivity.class);
         intent.putExtra("key", note.getKey());
         intent.putExtra("text", note.getText());
-        startActivityForResult(intent, 1001);
+        startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
     }
 
 
-    
+
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        NoteItem note = notesList.get(position);
+        Intent intent = new Intent(this, NoteEditorActivity.class);
+        intent.putExtra("key", note.getKey());
+        intent.putExtra("text", note.getText());
+        startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_ACTIVITY_REQUEST && resultCode == RESULT_OK) {
+            NoteItem note = new NoteItem();
+            note.setKey(data.getStringExtra("key"));
+            note.setText(data.getStringExtra("text"));
+            datasource.update(note);
+            refreshDisplay();
+        }
+    }
 }
