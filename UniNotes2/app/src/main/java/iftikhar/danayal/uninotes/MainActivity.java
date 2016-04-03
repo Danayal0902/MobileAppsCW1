@@ -8,9 +8,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,6 +25,8 @@ import iftikhar.danayal.uninotes.data.NotesData;
 public class MainActivity extends ListActivity {
 
     public static final int EDITOR_ACTIVITY_REQUEST = 1001;
+    private static final int MENU_DELETE_ID = 1002;
+    private int currentNoteID;
     private NotesData datasource;
     List<NoteItem> notesList;
     Button action_create;
@@ -35,14 +39,20 @@ public class MainActivity extends ListActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        registerForContextMenu(getListView());
+
         action_create = (Button)findViewById(R.id.action_create);
 
         action_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, NoteEditorActivity.class);
+                intent.putExtra("key", "my key");
+                intent.putExtra("text", "");
                 startActivity(intent);
+                createNote();
             }
+
         });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -71,8 +81,7 @@ public class MainActivity extends ListActivity {
         setListAdapter(adapt);
     }
 
-    private void setListAdapter(ArrayAdapter<NoteItem> adapt) {
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,7 +96,6 @@ public class MainActivity extends ListActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        createNote();
 
 
 
@@ -122,5 +130,23 @@ public class MainActivity extends ListActivity {
             datasource.update(note);
             refreshDisplay();
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        currentNoteID = (int)info.id;
+        menu.add(0, MENU_DELETE_ID, 0, "Delete");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_DELETE_ID) {
+            NoteItem note = notesList.get(currentNoteID);
+            datasource.remove(note);
+            refreshDisplay();
+        }
+
+        return super.onContextItemSelected(item);
     }
 }

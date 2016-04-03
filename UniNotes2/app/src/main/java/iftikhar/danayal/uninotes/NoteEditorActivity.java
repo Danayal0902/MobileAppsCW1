@@ -43,16 +43,10 @@ public class NoteEditorActivity extends Activity{
         finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            save();
-        }
-        return false;
-    }
+
 
     @Override
     public void onBackPressed() {
-        this.save();
+        save();
     }
 }
